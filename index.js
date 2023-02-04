@@ -1,26 +1,36 @@
-console.log("rrr555r");
-
-// index.js
 const argv = require("yargs").argv;
 
-// TODO: рефакторить
-function invokeAction({ action, id, name, email, phone }) {
+const contacts = require("./contacts");
+
+async function invokeAction({ action, id, name, email, phone }) {
   switch (action) {
     case "list":
-      // ...
+      const allContacts = await contacts.listContacts();
+      console.log(allContacts);
       break;
 
     case "get":
-      // ... id
-          console.log(id)
+      const getContact = await contacts.getContactById(id);
+      if (getContact) {
+        console.log(getContact);
+      } else {
+        console.log(`Контак з id=${id} відсутній`);
+      }
+
       break;
 
     case "add":
-      // ... name email phone
+      const addContact = await contacts.addContact(name, email, phone);
+      console.log(addContact);
       break;
 
     case "remove":
-      // ... id
+      const removeContact = await contacts.removeContact(id);
+      if (removeContact) {
+        console.log(removeContact);
+      } else {
+        console.log(`Контак з id=${id} відсутній`);
+      }
       break;
 
     default:
